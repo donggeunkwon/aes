@@ -1,2 +1,3 @@
-# aes
-implementation of Advanced Encryption Standard (AES) Block Cipher
+# AES; Advanced Encryption Standard
+
+Implementation of Advanced Encryption Standard (AES) Block Cipher
