@@ -1,4 +1,4 @@
-# AES; Advanced Encryption Standard
+# AES; Advanced Encryption Standard [![HitCount](http://hits.dwyl.com/DonggeunKwon/aes.svg)](http://hits.dwyl.com/DonggeunKwon/aes)
 
 Implementation of Advanced Encryption Standard (AES) Block Cipher
 
