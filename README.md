@@ -1,7 +1,7 @@
 # AES; Advanced Encryption Standard
 
 [![PyPI](https://img.shields.io/pypi/v/aes)](https://pypi.org/project/aes/) 
-[![PyPI - Downloads](https://img.shields.io/pypi/dm/aes)](https://pypi.org/project/aes/) 
+[![Downloads](https://pepy.tech/badge/aes)](https://pypi.org/project/aes/)
 [![GitHub](https://img.shields.io/github/license/donggeunkwon/aes)](https://github.com/donggeunkwon/aes/blob/master/LICENSE)
 
 A simple package for Advanced Encryption Standard(AES) Block Cipher [[pdf](http://csrc.nist.gov/publications/fips/fips197/fips-197.pdf)]
