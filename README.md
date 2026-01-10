@@ -1,119 +1,256 @@
-# AES; Advanced Encryption Standard
+# AES - Advanced Encryption Standard
 
-[![PyPI](https://img.shields.io/pypi/v/aes)](https://pypi.org/project/aes/) 
+[![PyPI](https://img.shields.io/pypi/v/aes)](https://pypi.org/project/aes/)
 [![Downloads](https://pepy.tech/badge/aes)](https://pypi.org/project/aes/)
 [![GitHub](https://img.shields.io/github/license/donggeunkwon/aes)](https://github.com/donggeunkwon/aes/blob/master/LICENSE)
 
-A simple package for Advanced Encryption Standard(AES) Block Cipher [[pdf](http://csrc.nist.gov/publications/fips/fips197/fips-197.pdf)]
+A simple and easy-to-use Python package for Advanced Encryption Standard (AES) Block Cipher [[FIPS 197 PDF](http://csrc.nist.gov/publications/fips/fips197/fips-197.pdf)]
 
-Version 1.2.0 is available. In this version, AES-128, 192, 256 with ECB, CBC, CTR mode are now supported!
+## 📋 Table of Contents
 
-## Install
+- [Features](#features)
+- [Installation](#installation)
+- [Quick Start](#quick-start)
+- [Usage Examples](#usage-examples)
+  - [Basic Encryption/Decryption](#basic-encryptiondecryption)
+  - [Using Core Functions](#using-core-functions)
+  - [Modes of Operation](#modes-of-operation)
+- [API Reference](#api-reference)
+- [Version History](#version-history)
 
-You can easily install from PyPI.
+## ✨ Features
+
+Version 1.2.0 is now available with extended support!
+
+| Feature | Support |
+|---------|---------|
+| **Key Sizes** | AES-128, AES-192, AES-256 |
+| **Modes of Operation** | ECB, CBC, CTR |
+| **Padding Schemes** | PKCS#7 |
+| **Input Format** | Integer, Byte Arrays |
+| **Core Functions** | Encryption, Decryption, Key Expansion |
+
+## 📦 Installation
+
+Install the package from PyPI using pip:
 
 ```bash
-$ pip install aes
+pip install aes
 ```
 
-After installation, open your python console and type
+### Verify Installation
+
+After installation, verify that the package is working correctly:
+
 ```python
 from aes import aes
 
-c = aes(0)
-print(c.dec_once(c.enc_once(0)))
-# print(c.decrypt(c.encrypt(0))) # for old version
-```
-If you get list of zeros, you are now ready to use __aes__ package!
+# Create a simple cipher instance
+cipher = aes(0)
 
-```bash
-Out[1]: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+# Test encryption and decryption
+result = cipher.dec_once(cipher.enc_once(0))
+print(result)
+# Expected output: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
 ```
 
-## Get Started
-When a mode of operation is not necessary, just use enc_once/dec_once like:
+If you see a list of zeros, the installation was successful!
+
+## 🚀 Quick Start
+
+### Basic Usage (Without Mode of Operation)
+
+For simple encryption/decryption without a specific mode of operation, use `enc_once` and `dec_once`:
 ```python
 import aes
 
-mk = 0x000102030405060708090a0b0c0d0e0f
-pt = 0x00112233445566778899aabbccddeeff
+# Define master key and plaintext
+master_key = 0x000102030405060708090a0b0c0d0e0f
+plaintext = 0x00112233445566778899aabbccddeeff
 
-cipher = aes.aes(mk, 128)
-ct = cipher.enc_once(pt)
-print(ct)
-print("0x"+hex(aes.utils.arr8bit2int(ct))[2:].zfill(32))
+# Create AES-128 cipher instance
+cipher = aes.aes(master_key, 128)
 
-pr = cipher.dec_once(ct)
-print(pr)
-print("0x"+hex(aes.utils.arr8bit2int(pr))[2:].zfill(32))
+# Encrypt
+ciphertext = cipher.enc_once(plaintext)
+print(f"Ciphertext (array): {ciphertext}")
+print(f"Ciphertext (hex): 0x{hex(aes.utils.arr8bit2int(ciphertext))[2:].zfill(32)}")
+# Output: 0x69c4e0d86a7b0430d8cdb78070b4c55a
+
+# Decrypt
+recovered = cipher.dec_once(ciphertext)
+print(f"Recovered (array): {recovered}")
+print(f"Recovered (hex): 0x{hex(aes.utils.arr8bit2int(recovered))[2:].zfill(32)}")
+# Output: 0x00112233445566778899aabbccddeeff
 ```
 
-```bash
-Out[1]: [105, 196, 224, 216, 106, 123, 4, 48, 216, 205, 183, 128, 112, 180, 197, 90]
-Out[2]: 0x69c4e0d86a7b0430d8cdb78070b4c55a
-Out[3]: [0, 17, 34, 51, 68, 85, 102, 119, 136, 153, 170, 187, 204, 221, 238, 255]
-Out[4]: 0x00112233445566778899aabbccddeeff
-```
+## 📚 Usage Examples
 
-Just want to use core functions:
+### Basic Encryption/Decryption
+
+#### AES-128 Example
+
 ```python
-# example of using aes core function
-mk_arr = aes.utils.int2arr8bit(mk, 16)
-pt_arr = aes.utils.int2arr8bit(mk, 16)
+import aes
 
-rk_arr = aes.core.key_expansion(mk_arr, 128)
+# 128-bit key and plaintext
+key = 0x000102030405060708090a0b0c0d0e0f
+plaintext = 0x00112233445566778899aabbccddeeff
 
-ct_arr = aes.core.encryption(pt_arr, rk_arr)
-print("0x"+hex(aes.utils.arr8bit2int(ct_arr))[2:].zfill(32))
+# Create cipher
+cipher = aes.aes(key, 128)
 
-pr_arr = aes.core.decryption(ct_arr, rk_arr)
-print("0x"+hex(aes.utils.arr8bit2int(pr_arr))[2:].zfill(32))
+# Encrypt and decrypt
+ciphertext = cipher.enc_once(plaintext)
+recovered = cipher.dec_once(ciphertext)
+
+assert aes.utils.arr8bit2int(recovered) == plaintext
 ```
 
-```bash
-Out[1]: 0x0a940bb5416ef045f1c39458c653ea5a
-Out[2]: 0x000102030405060708090a0b0c0d0e0f
-```
+### Using Core Functions
 
-With the mode of opearation:
+If you want direct access to the core AES functions:
 ```python
-# example of using mode of operation
-mk = 0x000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f
-mk_arr = aes.utils.int2arr8bit(mk, 32)
-pt = 0x00112233445566778899aabbccddeeff
-pt_arr = aes.utils.int2arr8bit(pt, 16)
+import aes
 
+# Convert integers to byte arrays
+master_key = 0x000102030405060708090a0b0c0d0e0f
+plaintext = 0x000102030405060708090a0b0c0d0e0f
 
-cipher = aes.aes(mk, 256, mode='CTR', padding='PKCS#7')
+mk_arr = aes.utils.int2arr8bit(master_key, 16)
+pt_arr = aes.utils.int2arr8bit(plaintext, 16)
 
-# notice: enc/dec can only 'list'  !! 
+# Key expansion
+round_keys = aes.core.key_expansion(mk_arr, 128)
+
+# Core encryption
+ct_arr = aes.core.encryption(pt_arr, round_keys)
+print(f"Ciphertext: 0x{hex(aes.utils.arr8bit2int(ct_arr))[2:].zfill(32)}")
+# Output: 0x0a940bb5416ef045f1c39458c653ea5a
+
+# Core decryption
+pr_arr = aes.core.decryption(ct_arr, round_keys)
+print(f"Recovered: 0x{hex(aes.utils.arr8bit2int(pr_arr))[2:].zfill(32)}")
+# Output: 0x000102030405060708090a0b0c0d0e0f
+```
+
+### Modes of Operation
+
+#### CTR Mode with AES-256
+```python
+import aes
+
+# 256-bit key
+master_key = 0x000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f
+plaintext = 0x00112233445566778899aabbccddeeff
+
+# Convert to byte arrays
+pt_arr = aes.utils.int2arr8bit(plaintext, 16)
+
+# Create cipher with CTR mode and PKCS#7 padding
+cipher = aes.aes(master_key, 256, mode='CTR', padding='PKCS#7')
+
+# Encrypt (note: enc/dec methods work with byte arrays)
 ct_arr = cipher.enc(pt_arr)
-print("0x"+hex(aes.utils.arr8bit2int(ct_arr))[2:].zfill(32))
+print(f"Ciphertext: 0x{hex(aes.utils.arr8bit2int(ct_arr))[2:].zfill(32)}")
 
+# Decrypt
 pr_arr = cipher.dec(ct_arr)
-print("0x"+hex(aes.utils.arr8bit2int(pr_arr))[2:].zfill(32))
-```
-```bash
-Out[1]: 0xf235e46425db35cb300a528fbbe62697a55ca80972eb579044d786243219d7af
-Out[2]: 0x00112233445566778899aabbccddeeff
+print(f"Recovered: 0x{hex(aes.utils.arr8bit2int(pr_arr))[2:].zfill(32)}")
+# Output: 0x00112233445566778899aabbccddeeff
 ```
 
-It is great! But, if you didn't input the initial vector for 'CBC', 'CTR' mode, you get __Warning__:
-```bash
-/usr/local/lib/python3.7/dist-packages/aes/utils/_check_tools.py:59: UserWarning: Initail Vector is randomly selected: [23, 202, 118, 211, 113, 65, 4, 46, 115, 56, 211, 200, 177, 24, 127, 186] warnings.warn("Initail Vector is randomly selected: " + str(iv))
-```
-Don't forget to take the IV.
+#### Important: Initialization Vector (IV)
+
+When using CBC or CTR modes without specifying an IV, a random one will be generated:
+
 ```python
-print(cipher.iv) # save it!
+cipher = aes.aes(key, 256, mode='CBC')
+# Warning: Initial Vector is randomly selected: [23, 202, 118, 211, ...]
 ```
 
-------
-### Version Summary
-- v1.0.0 
-- v1.0.1
-  + Bug reported "__ModuleNotFoundError__", and fixed in this version.
-- v1.2.0
-  + Added AES-192, 256 and CBC, CTR mode.
+**Always save the IV for decryption:**
+
+```python
+# Save the IV
+iv = cipher.iv
+print(f"IV: {iv}")  # Save this for later decryption!
+
+# For decryption with the same IV
+cipher_decrypt = aes.aes(key, 256, mode='CBC', iv=iv)
+```
+
+#### CBC Mode Example
+
+```python
+import aes
+
+key = 0x000102030405060708090a0b0c0d0e0f
+plaintext_arr = aes.utils.int2arr8bit(0x00112233445566778899aabbccddeeff, 16)
+
+# Specify custom IV (recommended)
+custom_iv = [0] * 16
+
+cipher = aes.aes(key, 128, mode='CBC', iv=custom_iv, padding='PKCS#7')
+ciphertext = cipher.enc(plaintext_arr)
+recovered = cipher.dec(ciphertext)
+```
+
+## 📖 API Reference
+
+### Class: `aes.aes`
+
+Create an AES cipher instance.
+
+```python
+cipher = aes.aes(key, key_size=128, mode=None, iv=None, padding=None)
+```
+
+**Parameters:**
+
+| Parameter | Type | Default | Description |
+|-----------|------|---------|-------------|
+| `key` | int or list | required | Master key (integer or byte array) |
+| `key_size` | int | 128 | Key size in bits (128, 192, or 256) |
+| `mode` | str | None | Mode of operation ('ECB', 'CBC', 'CTR') |
+| `iv` | list | None | Initialization vector (required for CBC/CTR) |
+| `padding` | str | None | Padding scheme ('PKCS#7') |
+
+**Methods:**
+
+- `enc_once(plaintext)` - Encrypt a single block (no mode)
+- `dec_once(ciphertext)` - Decrypt a single block (no mode)
+- `enc(plaintext_array)` - Encrypt with mode of operation
+- `dec(ciphertext_array)` - Decrypt with mode of operation
+
+### Core Functions
+
+```python
+# Key expansion
+round_keys = aes.core.key_expansion(key_array, key_size)
+
+# Block encryption/decryption
+ciphertext = aes.core.encryption(plaintext_array, round_keys)
+plaintext = aes.core.decryption(ciphertext_array, round_keys)
+```
+
+### Utility Functions
+
+```python
+# Convert integer to byte array
+byte_array = aes.utils.int2arr8bit(integer_value, byte_length)
+
+# Convert byte array to integer
+integer_value = aes.utils.arr8bit2int(byte_array)
+```
+
+## 📋 Version History
+
+| Version | Release Date | Changes |
+|---------|--------------|---------|
+| **v1.2.0** | Latest | Added AES-192, AES-256 support<br>Added CBC and CTR modes<br>Improved API design |
+| **v1.0.1** | - | Fixed `ModuleNotFoundError` bug |
+| **v1.0.0** | - | Initial release with AES-128 support |
 
 ------
 ### Report a bug to
