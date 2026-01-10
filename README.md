@@ -16,10 +16,7 @@ A simple and easy-to-use Python package for Advanced Encryption Standard (AES) B
   - [Using Core Functions](#using-core-functions)
   - [Modes of Operation](#modes-of-operation)
 - [API Reference](#api-reference)
-- [Security Considerations](#security-considerations)
 - [Version History](#version-history)
-- [Contributing](#contributing)
-- [License](#license)
 
 ## ✨ Features
 
@@ -247,18 +244,6 @@ byte_array = aes.utils.int2arr8bit(integer_value, byte_length)
 integer_value = aes.utils.arr8bit2int(byte_array)
 ```
 
-## 🔒 Security Considerations
-
-1. **Never hardcode keys**: Store keys securely using environment variables or key management systems
-2. **Use random IVs**: For CBC and CTR modes, always use a cryptographically secure random IV
-3. **Key size**: Use AES-256 for sensitive data requiring long-term security
-4. **Mode selection**:
-   - **ECB**: Not recommended (no IV, patterns visible in ciphertext)
-   - **CBC**: Good for general purpose, requires random IV
-   - **CTR**: Excellent for parallel processing, requires unique IV/nonce
-5. **Authentication**: AES only provides confidentiality. Use HMAC or authenticated encryption (GCM) for integrity
-6. **Padding oracle attacks**: Be aware when using CBC with PKCS#7 padding
-
 ## 📋 Version History
 
 | Version | Release Date | Changes |
@@ -267,32 +252,6 @@ integer_value = aes.utils.arr8bit2int(byte_array)
 | **v1.0.1** | - | Fixed `ModuleNotFoundError` bug |
 | **v1.0.0** | - | Initial release with AES-128 support |
 
-## 🤝 Contributing
-
-Contributions are welcome! If you'd like to contribute:
-
-1. Fork the repository
-2. Create a feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit your changes (`git commit -m 'Add amazing feature'`)
-4. Push to the branch (`git push origin feature/amazing-feature`)
-5. Open a Pull Request
-
-### Reporting Bugs
-
-If you find a bug, please open an issue on GitHub or contact:
-
-**Donggeun Kwon** - donggeun.kwon@gmail.com
-
-## 📄 License
-
-This project is licensed under the terms specified in the [LICENSE](https://github.com/donggeunkwon/aes/blob/master/LICENSE) file.
-
-## 🔗 Resources
-
-- [FIPS 197 - AES Specification](http://csrc.nist.gov/publications/fips/fips197/fips-197.pdf)
-- [PyPI Package](https://pypi.org/project/aes/)
-- [GitHub Repository](https://github.com/donggeunkwon/aes)
-
----
-
-Made with ❤️ by [Donggeun Kwon](https://github.com/donggeunkwon)
+------
+### Report a bug to
+Donggeun Kwon ([email](donggeun.kwon@gmail.com))
