@@ -6,18 +6,6 @@
 
 A simple and easy-to-use Python package for Advanced Encryption Standard (AES) Block Cipher [[FIPS 197 PDF](http://csrc.nist.gov/publications/fips/fips197/fips-197.pdf)]
 
-## 📋 Table of Contents
-
-- [Features](#features)
-- [Installation](#installation)
-- [Quick Start](#quick-start)
-- [Usage Examples](#usage-examples)
-  - [Basic Encryption/Decryption](#basic-encryptiondecryption)
-  - [Using Core Functions](#using-core-functions)
-  - [Modes of Operation](#modes-of-operation)
-- [API Reference](#api-reference)
-- [Version History](#version-history)
-
 ## ✨ Features
 
 Version 1.2.0 is now available with extended support!
